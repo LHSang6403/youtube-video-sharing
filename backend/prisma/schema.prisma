@@ -1,0 +1,45 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   @unique
+  password String
+  name     String
+  videos   Video[]
+  shares   Share[]
+}
+
+model Video {
+  id        Int      @id @default(autoincrement())
+  videoUrl  String
+  title     String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+
+  shares    Share[]
+
+  @@index([userId], name: "idx_video_userId")
+  @@index([createdAt], name: "idx_video_createdAt")
+}
+
+model Share {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  videoId   Int
+  video     Video    @relation(fields: [videoId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@index([userId], name: "idx_share_userId")
+  @@index([videoId], name: "idx_share_videoId")
+
+  @@unique([userId, videoId], name: "uniq_user_video")
+}

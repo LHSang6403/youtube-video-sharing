@@ -1,0 +1,46 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: Int!
+  username: String!
+  name: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+}
+
+type VideoEntity {
+  id: Int!
+  videoUrl: String!
+  title: String!
+  sharedBy: String!
+}
+
+type Query {
+  videos: [VideoEntity!]!
+}
+
+type Mutation {
+  register(registerInput: RegisterInput!): User!
+  login(loginInput: LoginInput!): LoginResponse!
+  shareVideo(shareVideoInput: ShareVideoInput!): VideoEntity!
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+  name: String!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input ShareVideoInput {
+  videoUrl: String!
+  title: String!
+}
